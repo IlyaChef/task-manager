@@ -4,8 +4,9 @@ from alembic import command
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from typing import Type
 
-Base = declarative_base()
+Base: Type = declarative_base()
 engine = create_engine('sqlite:///tasks.db')
 Session = sessionmaker(bind=engine)
 
@@ -20,7 +21,7 @@ class Task(Base):
     deadline = Column(DateTime)
 
 
-def create_database():
+def create_database() -> None:
     if not os.path.exists('tasks.db'):
         Base.metadata.create_all(engine)
         alembic_cfg = Config('alembic.ini')

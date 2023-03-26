@@ -4,7 +4,7 @@ from datetime import datetime
 from db.db import Task
 
 
-def show_tasks(args, session):
+def show_tasks(args, session) -> None:
     tasks = session.query(Task).filter_by(status='new').all()
     for task in tasks:
         deadline_str = f"deadline: {task.deadline.strftime('%Y-%m-%d')}"
