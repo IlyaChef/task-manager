@@ -3,7 +3,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from db.database import Task
+from task_manager.db.database import Task
 
 
 def show_tasks(args: argparse.Namespace, session: Session) -> None:

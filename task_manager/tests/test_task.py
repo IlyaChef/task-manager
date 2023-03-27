@@ -4,9 +4,9 @@ from datetime import datetime
 from unittest.mock import patch
 
 from _pytest.capture import CaptureFixture
-from db.database import Task
+from task_manager.db.database import Task, Base
 from sqlalchemy.orm import Session
-from task import show_tasks_deadline, create_task, show_tasks, move_task, show_in_progress
+from task_manager.task import show_tasks_deadline, create_task, show_tasks, move_task, show_in_progress
 
 
 def test_create_task(session: Session) -> None:

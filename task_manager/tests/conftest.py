@@ -2,7 +2,7 @@ import datetime
 from datetime import timedelta
 
 import pytest
-from db.database import Base, Task
+from task_manager.db.database import Task, Base
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
