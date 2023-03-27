@@ -177,6 +177,7 @@ MANIFEST
 # sqlite:
 *.sqlite
 
+task_manager/db/migrations/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
