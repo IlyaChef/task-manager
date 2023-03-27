@@ -1,9 +1,10 @@
 import os
-from alembic.config import Config
+from typing import Type
+
 from alembic import command
+from alembic.config import Config
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
-from typing import Type
 
 
 Base: Type = declarative_base()

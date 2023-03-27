@@ -1,12 +1,15 @@
-import io
 import argparse
-from datetime import datetime, timedelta
+import io
+from datetime import datetime
 from unittest.mock import patch
+
+from _pytest.capture import CaptureFixture
+from db.database import Task
+from sqlalchemy.orm import Session
 from task import show_tasks_deadline, create_task, show_tasks, move_task, show_in_progress
-from db.db import Task
 
 
-def test_create_task(session):
+def test_create_task(session: Session) -> None:
     args = argparse.Namespace(
         title="Homework",
         description="Merge the homework",
@@ -20,7 +23,7 @@ def test_create_task(session):
     assert task.deadline == datetime.strptime('2023-04-01', '%Y-%m-%d')
 
 
-def test_show_tasks(capsys, session, tasks):
+def test_show_tasks(capsys: CaptureFixture, session: Session, tasks: list[Task]) -> None:
     show_tasks([], session)
     output = capsys.readouterr().out.strip()
 
@@ -31,7 +34,7 @@ def test_show_tasks(capsys, session, tasks):
             assert task.title not in output
 
 
-def test_show_in_progress(capsys, session, tasks):
+def test_show_in_progress(capsys: CaptureFixture, session: Session, tasks: list[Task]) -> None:
     show_in_progress([], session)
     output = capsys.readouterr().out.strip()
 
@@ -42,7 +45,7 @@ def test_show_in_progress(capsys, session, tasks):
             assert task.title not in output
 
 
-def test_move_task(session, tasks, capsys):
+def test_move_task(session: Session, tasks: list[Task], capsys: CaptureFixture) -> None:
     args = argparse.Namespace(task_id=1, status="in_progress")
     move_task(args, session)
     task = session.query(Task).filter_by(id=1).first()
@@ -51,7 +54,7 @@ def test_move_task(session, tasks, capsys):
     assert captured.out == f"Task 1 moved to {task.status}\n"
 
 
-def test_show_tasks_deadline_today(session, tasks, today):
+def test_show_tasks_deadline_today(session: Session, tasks: list[Task], today: datetime) -> None:
     test_input = today
     expected = [task.title for task in tasks if task.deadline == test_input]
     args = argparse.Namespace(date=test_input.strftime('%Y-%m-%d'))
@@ -60,5 +63,3 @@ def test_show_tasks_deadline_today(session, tasks, today):
         output = fake_output.getvalue().strip()
         for task_title in expected:
             assert task_title in output
-
-

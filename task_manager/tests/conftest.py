@@ -1,13 +1,15 @@
 import datetime
-import pytest
 from datetime import timedelta
-from db.db import Base, Task
+
+import pytest
+from db.database import Base, Task
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import Session, sessionmaker
 
 
 @pytest.fixture(scope="function")
-def engine():
+def engine() -> Engine:
     engine = create_engine("sqlite:///test_db.sqlite")
     Base.metadata.create_all(bind=engine)
     yield engine
@@ -16,7 +18,7 @@ def engine():
 
 
 @pytest.fixture(scope="function")
-def session(engine):
+def session(engine: Engine) -> Session:
     Session = sessionmaker(bind=engine)
     session = Session()
     yield session
@@ -24,12 +26,12 @@ def session(engine):
 
 
 @pytest.fixture(scope='function')
-def today():
+def today() -> datetime.date:
     return datetime.date.today()
 
 
 @pytest.fixture(scope="function")
-def tasks(session, today):
+def tasks(session: Session, today: datetime.date) -> list[Task]:
     tasks = [
         Task(title="task1", status="new", description="set up CI", deadline=today),
         Task(title="task2", status="new", description="finish the project", deadline=today + timedelta(days=1)),
@@ -44,8 +46,3 @@ def tasks(session, today):
         session.add(task)
     session.commit()
     return tasks
-
-
-def clear_db(session):
-    session.query(Task).delete()
-    session.commit()

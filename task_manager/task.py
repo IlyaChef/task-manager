@@ -1,10 +1,12 @@
 import argparse
-from sqlalchemy.orm import Session
 from datetime import datetime
-from db.db import Task
+
+from sqlalchemy.orm import Session
+
+from db.database import Task
 
 
-def show_tasks(args, session) -> None:
+def show_tasks(args: argparse.Namespace, session: Session) -> None:
     tasks = session.query(Task).filter_by(status='new').all()
     for task in tasks:
         deadline_str = f"deadline: {task.deadline.strftime('%Y-%m-%d')}"
@@ -31,7 +33,7 @@ def move_task(args: argparse.Namespace, session: Session) -> None:
     print(f"Task {task.id} moved to {task.status}")
 
 
-def show_in_progress(args, session):
+def show_in_progress(args: argparse.Namespace, session: Session) -> None:
     tasks = session.query(Task).filter_by(status='in_progress').all()
     for task in tasks:
         deadline_str = f"deadline: {task.deadline.strftime('%Y-%m-%d')}"
