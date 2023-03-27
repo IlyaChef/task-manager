@@ -6,10 +6,11 @@ from db.database import Base, Task
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
+from typing import Generator
 
 
 @pytest.fixture(scope="function")
-def engine() -> Engine:
+def engine() -> Generator[Engine, None, None]:
     engine = create_engine("sqlite:///test_db.sqlite")
     Base.metadata.create_all(bind=engine)
     yield engine
@@ -18,7 +19,7 @@ def engine() -> Engine:
 
 
 @pytest.fixture(scope="function")
-def session(engine: Engine) -> Session:
+def session(engine: Engine) -> Generator[Session, None, None]:
     Session = sessionmaker(bind=engine)
     session = Session()
     yield session
