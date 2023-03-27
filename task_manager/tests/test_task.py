@@ -24,7 +24,8 @@ def test_create_task(session: Session) -> None:
 
 
 def test_show_tasks(capsys: CaptureFixture, session: Session, tasks: list[Task]) -> None:
-    show_tasks([], session)
+    args = argparse.Namespace()
+    show_tasks(args, session)
     output = capsys.readouterr().out.strip()
 
     for task in tasks:
@@ -35,7 +36,8 @@ def test_show_tasks(capsys: CaptureFixture, session: Session, tasks: list[Task])
 
 
 def test_show_in_progress(capsys: CaptureFixture, session: Session, tasks: list[Task]) -> None:
-    show_in_progress([], session)
+    args = argparse.Namespace()
+    show_in_progress(args, session)
     output = capsys.readouterr().out.strip()
 
     for task in tasks:
