@@ -23,7 +23,7 @@ def create_task(args: argparse.Namespace, session: Session) -> None:
 
 
 def move_task(args: argparse.Namespace, session: Session) -> None:
-    task = session.query(Task).get(args.task_id)
+    task = session.query(Task).filter_by(id=args.task_id).first()
     if not task:
         raise argparse.ArgumentTypeError(f"No task with id {args.task_id}")
     task.status = args.status
